@@ -76,15 +76,22 @@ if st.button("🚀 開始生成", type="primary"):
         font_path = install_font()
         if not os.path.exists("downloads"): os.makedirs("downloads")
         
-        # 2. 下載影片
-        status.text("正在雲端下載影片...")
+# 2. 下載影片 (加入 Cookie 繞過與 User-Agent 偽裝)
+        status.text("正在雲端下載影片 (嘗試繞過驗證)...")
         bar.progress(20)
-        subprocess.run([
-            "yt-dlp", "-f", "worstvideo[height<=480]+bestaudio/best", 
+        
+        # 構建偽裝指令
+        cmd = [
+            "yt-dlp", 
+            "-f", "worstvideo[height<=480]+bestaudio/best", 
             "--merge-output-format", "mp4", 
             "-o", "downloads/temp_video.%(ext)s", 
-            "--no-playlist", url
-        ])
+            "--no-playlist", 
+            "--user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            url
+        ]
+        
+        subprocess.run(cmd)
         
         video_files = glob.glob("downloads/*.mp4")
         if not video_files:

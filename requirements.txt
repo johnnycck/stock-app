@@ -1,5 +1,5 @@
 streamlit
 openai-whisper
-yt-dlp
+git+https://github.com/yt-dlp/yt-dlp.git
 fpdf
 ffmpeg-python
